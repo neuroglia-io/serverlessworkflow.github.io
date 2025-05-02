@@ -2,6 +2,7 @@ import type { StarlightPlugin, StarlightUserConfig } from "@astrojs/starlight/ty
 import { WebsiteVersionSelectorUserConfigSchema, type WebsiteVersionSelectorUserConfig } from "./config";
 import { AstroError } from "astro/errors";
 import { vitePluginWebsiteVersionSelector } from "./vite";
+import { fileURLToPath } from 'node:url';
 
 const overrides: Array<keyof NonNullable<StarlightUserConfig['components']>> = [
   'ThemeSelect',
@@ -22,12 +23,19 @@ export default function websiteVersionsPlugin(userConfig: WebsiteVersionSelector
       /*async*/'config:setup'({
         addIntegration,
         config: starlightConfig,
+        logger,
         updateConfig
       }) {
         try {
           const components = {...starlightConfig.components || {}};
           overrides.forEach(override => {
-            components[override] = `overrides/${override}.astro`;
+            if (components[override]) {
+              logger.warn(`An override for component \`<${override}>\` has already been defined in your Starlight configuration.`)
+              return;
+            }
+            components[override] = fileURLToPath(
+              new URL(`./overrides/${override}.astro`, import.meta.url)
+            )
           });
           updateConfig({ components });
           addIntegration({
