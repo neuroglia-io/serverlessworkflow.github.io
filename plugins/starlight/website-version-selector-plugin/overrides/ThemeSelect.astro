@@ -1,0 +1,8 @@
+---
+/** Overrides Starlight theme selector componenent to include version selector */
+import Default from '@astrojs/starlight/components/ThemeSelect.astro';
+import VersionSelector from '../components/VersionSelector.astro';
+---
+
+<VersionSelector />
+<Default><slot /></Default>

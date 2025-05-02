@@ -1,0 +1,1 @@
+Website version selector plugin, based on [HiDeoo's starlight-versions](https://github.com/HiDeoo/starlight-versions/tree/main)

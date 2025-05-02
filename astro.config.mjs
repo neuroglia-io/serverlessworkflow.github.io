@@ -5,6 +5,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from "@tailwindcss/vite";
 import netlify from '@astrojs/netlify';
 import starlight from '@astrojs/starlight';
+import websiteVersionsPlugin from './plugins/starlight/website-version-selector-plugin';
 
 // https://astro.build/config
 export default defineConfig({
@@ -71,6 +72,20 @@ export default defineConfig({
           autogenerate: { directory: 'docs/reference' },
         },
       ],
+      plugins: [
+        websiteVersionsPlugin({
+          versions: [
+            {
+              label: 'current',
+              url: 'https://www.serverlessworkflow.io',
+            },
+            {
+              label: 'v0.9',
+              url: 'https://v0-9.serverlessworkflow.io',
+            }
+          ]
+        })
+      ]
     }),
     mdx(), 
   ],
